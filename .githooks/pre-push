@@ -1,0 +1,27 @@
+#!/bin/sh
+# Pre-push gate: refuse to push commits that contain secrets.
+#
+# Installed automatically by `npm install` (see the "prepare" script in
+# package.json). To install manually:  git config core.hooksPath .githooks
+# To bypass once (not recommended):     git push --no-verify
+
+echo "🔍 pre-push: scanning for committed secrets..."
+
+# 1) Always run the dependency-free secret scan (uses the project's vitest).
+if ! npm run --silent test:secrets; then
+  echo "❌ pre-push blocked: a secret/token was found in your commits."
+  echo "   Remove it, and if it was a real token, rotate it in Figma now."
+  exit 1
+fi
+
+# 2) If gitleaks is installed locally, also scan full history (best-effort).
+if command -v gitleaks >/dev/null 2>&1; then
+  echo "🔍 pre-push: running gitleaks over history..."
+  if ! gitleaks detect --no-banner --redact; then
+    echo "❌ pre-push blocked by gitleaks. Rotate any real token immediately."
+    exit 1
+  fi
+fi
+
+echo "✅ pre-push: no secrets found."
+exit 0

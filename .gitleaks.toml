@@ -1,0 +1,12 @@
+title = "figma-comments-mcp gitleaks config"
+
+# Use the built-in ruleset, then allowlist known non-secrets.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Test fixtures and example env are not real secrets"
+paths = [
+  '''test/no-secrets\.test\.ts''',
+  '''\.env\.example''',
+]
