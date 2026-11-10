@@ -1,3 +1,5 @@
+Reference https://lnkd.in/p/e7JpjniR
+
 # figma-comments-mcp
 
 [![CI](https://github.com/junsimon/figma-comments-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/junsimon/figma-comments-mcp/actions/workflows/ci.yml)
